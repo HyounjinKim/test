@@ -10,6 +10,18 @@ import { Common } from "../../styles/CommonCss";
 import { LoginTitle, LoginWrap } from "../../styles/login/loginCss";
 import { areaStyle, buttonPrimaryStyle } from "../../styles/sign/signArea";
 
+// const initState = {
+//   email: "aaa@naver.com",
+//   nickname: "아무거나",
+//   password: "aA123456!",
+//   passwordch: "",
+//   address: "",
+//   address2: "",
+//   gender: "MALE",
+//   birthdate: "20010510",
+//   phone: "01012345678",
+// };
+
 const initState = {
   email: "",
   nickname: "",
@@ -29,12 +41,15 @@ const SignupPage = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordch, setPasswordch] = useState("");
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useRecoilState(addressState);
   const [values, setValues] = useState({});
-  const [lastaddress, setlastaddress] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorCode, setErrorCode] = useState("");
 
   const updateAddressInfo = ({ zonecode, address }) => {
     // 주소 정보 업데이트
@@ -49,7 +64,19 @@ const SignupPage = () => {
       gender: value,
     }));
   };
-  const onFinish = values => {
+  const onFinish = inivalues => {
+    const values = {
+      email,
+      password,
+      passwordch,
+      birthdate,
+      nickname,
+      phone,
+      gender: inivalues.gender,
+      address,
+      address2,
+    };
+    console.log("보냄" + JSON.stringify(values));
     postSign({
       values,
       address,
@@ -63,12 +90,14 @@ const SignupPage = () => {
   const successFn = data => {
     // console.log("successFn : ", data);
     setMemberInfo(data);
-    navigate(`/login`);
+    navigate(`/sign/in`);
   };
 
   const failFn = data => {
-    // console.log("failFn : ", data);
-    alert("회원가입 실패");
+    console.log("failFn : ", data);
+    setErrorMessage(data.errorMessage);
+    setErrorCode(data.errorCode);
+    alert(data.errorMessage);
   };
 
   const errorFn = data => {
@@ -106,13 +135,13 @@ const SignupPage = () => {
               remember: true,
               email: memberInfo.email,
               password: memberInfo.password,
-              passwordch: memberInfo.password,
+              passwordch: memberInfo.passwordch,
               birthdate: memberInfo.birthdate,
               nickname: memberInfo.nickname,
               phone: memberInfo.phone,
               gender: memberInfo.gender,
               address: address,
-              lastaddress: memberInfo.lastaddress,
+              address2: memberInfo.address2,
             }}
             onFinish={onFinish}
           >
@@ -166,30 +195,34 @@ const SignupPage = () => {
                     {
                       validator: (_, value) => {
                         // 주민등록번호 문자열을 날짜로 변환
-                        const year = value.substr(0, 2);
-                        const month = value.substr(2, 2);
-                        const day = value.substr(4, 2);
+                        const year = value.substr(0, 4);
+                        const month = value.substr(4, 2);
+                        const day = value.substr(6, 2);
+
                         // 현재 날짜 구하기
                         const currentDate = new Date();
+
                         // 생년월일 계산
-                        const birthYear =
-                          parseInt(year) < 22
-                            ? 2000 + parseInt(year)
-                            : 1900 + parseInt(year);
+                        const birthYear =(
+                          parseInt(year.substr(0, 2)) > 19
+                            ? 2000 + parseInt(year.substr(2, 2))
+                            : 1900 + parseInt(year.substr(2, 2)));
                         const birthDate = new Date(
                           birthYear,
-                          parseInt(month) - 1,
+                          parseInt(month),
                           parseInt(day),
                         );
+
                         // 나이 계산
                         const age =
                           currentDate.getFullYear() - birthDate.getFullYear();
+
                         // 생일이 지났는지 체크
-                        if (
-                          currentDate.getMonth() < birthDate.getMonth() ||
-                          (currentDate.getMonth() === birthDate.getMonth() &&
-                            currentDate.getDate() < birthDate.getDate())
-                        )
+                        // if (
+                        //   currentDate.getMonth() < birthDate.getMonth() ||
+                        //   (currentDate.getMonth() === birthDate.getMonth() &&
+                        //     currentDate.getDate() < birthDate.getDate())
+                        // )
                           if (age < 20) {
                             // 20세 미만인 경우 에러 반환
                             return Promise.reject(
@@ -221,7 +254,7 @@ const SignupPage = () => {
                     placeholder="성별"
                     onClick={handleGenderChange}
                   >
-                    <Select.Option value="FEMAIL">여성</Select.Option>
+                    <Select.Option value="FEMALE">여성</Select.Option>
                     <Select.Option value="MALE">남성</Select.Option>
                   </Select>
                 </Form.Item>
@@ -230,10 +263,6 @@ const SignupPage = () => {
                 <Form.Item
                   name="phone"
                   rules={[
-                    {
-                      required: true,
-                      message: "전화번호를 입력 해주세요",
-                    },
                     {
                       required: true,
                       message: "전화번호를 입력 해주세요",
@@ -274,11 +303,11 @@ const SignupPage = () => {
                     required: true,
                     message: "이메일을 입력하세요.",
                   },
-                  {
-                    pattern:
-                      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i,
-                    message: "이메일 형식에 맞게 작성해주세요",
-                  },
+                  // {
+                  //   pattern:
+                  //     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i,
+                  //   message: "이메일 형식에 맞게 작성해주세요",
+                  // },
                   {
                     whitespace: true,
                     message: "이메일은 공백만으로 만들 수 없습니다",
@@ -290,6 +319,9 @@ const SignupPage = () => {
                   style={areaStyle}
                   onChange={e => setEmail(e.target.value)}
                 />
+                {/* {errorMessage.includes("이메일") && (
+                  <span style={{ color: "red" }}>{errorMessage}</span>
+                )} */}
               </Form.Item>
               <Form.Item
                 name="password"
@@ -334,7 +366,11 @@ const SignupPage = () => {
                   }),
                 ]}
               >
-                <Input.Password style={areaStyle} placeholder="비밀번호 확인" />
+                <Input.Password
+                  style={areaStyle}
+                  placeholder="비밀번호 확인"
+                  onChange={e => setPasswordch(e.target.value)}
+                />
               </Form.Item>
 
               <Address onAddressChange={updateAddressInfo} />
@@ -353,7 +389,7 @@ const SignupPage = () => {
               >
                 <Input
                   style={{ height: 60, fontSize: "20px" }}
-                  onChange={e => setlastaddress(e.target.value)}
+                  onChange={e => setAddress2(e.target.value)}
                   placeholder="상세주소"
                 />
               </Form.Item>

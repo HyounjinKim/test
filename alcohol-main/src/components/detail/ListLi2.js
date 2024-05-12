@@ -1,12 +1,11 @@
 import React from "react";
 
-const ListLi = ({ taste,aroma,finish }) => {
+const ListLi2 = ({ content,nation }) => {
   return (
     <div>
       <ul>
-        <li>맛 : {taste}</li>
-        <li>향 : {aroma}</li>
-        <li>여운 : {finish}</li>
+        <li>도수 : {content}도</li>
+        <li>국가 : {nation}</li>
         {/* {items.map((item, index) => (
           <li key={index}>{item}</li>
         ))} */}
@@ -15,4 +14,4 @@ const ListLi = ({ taste,aroma,finish }) => {
   );
 };
 
-export default ListLi;
+export default ListLi2;

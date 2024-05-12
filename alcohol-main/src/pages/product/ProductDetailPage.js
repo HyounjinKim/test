@@ -27,6 +27,8 @@ import {
 } from "../../styles/common/reviewProductCss";
 import { StarRev } from "../../styles/common/StarCss";
 import { stockState } from "../../atom/stockState";
+import ListLi2 from '../../components/detail/ListLi2';
+import ListLi3 from '../../components/detail/ListLi3';
 
 export const items1 = ["1", "2", "3"];
 export const items2 = ["a", "b", "c"];
@@ -122,10 +124,14 @@ const DetailedItemPage = () => {
     ),
   );
 
-  const taste = serverData[0].taste;
+  const tastes = serverData[0].taste;
+  const aromas = serverData[0].aroma;
+  const finishs = serverData[0].finish;
+  const contents = serverData[0].content;
+  const nations = serverData[0].nation;
   // console.log("fff : ", taste);
-  const tasteArray = taste.split(", ");
-  console.log("array : ", tasteArray);
+  const taste = tastes;
+  console.log("array : ", taste);
   const categoryArray = [
     `${serverData[0].maincategory}`,
     `${serverData[0].subcategory}`,
@@ -269,7 +275,9 @@ const DetailedItemPage = () => {
       <div>
         <PB20>Tasting Note</PB20>
         <UlStyle>
-          <ListLi items={tasteArray} />
+          <ListLi taste={tastes} aroma={aromas} finish={finishs} />
+          {/* <ListLi aroma={taste} />
+          <ListLi finish={taste} /> */}
           {/* <ListLi items={items2} /> */}
         </UlStyle>
       </div>
@@ -278,15 +286,14 @@ const DetailedItemPage = () => {
       <div>
         <PB20>Information</PB20>
         <UlStyle>
-          <ListLi items={items1} />
-          <ListLi items={items2} />
+          <ListLi2 content={contents} nation={nations}></ListLi2>
         </UlStyle>
       </div>
       <ItemLine />
       <div>
         <PB20>Category</PB20>
         <UlStyle>
-          <ListLi items={categoryArray} />
+          <ListLi3 items={categoryArray}></ListLi3>
           {/* <ListLi items={serverData[0].subcategory} /> */}
         </UlStyle>
       </div>

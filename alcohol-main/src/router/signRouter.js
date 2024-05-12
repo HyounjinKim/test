@@ -7,6 +7,10 @@ const SigninPage = lazy(() => import("../pages/sign/SigninPage"));
 // 로그아웃 페이지
 const SignupPage = lazy(() => import("../pages/sign/SignupPage"));
 
+const SigninkakaoPage = lazy(() => import("../pages/sign/SigninkakaoPage"));
+
+const LogoutkakaoPage = lazy(() => import("../pages/sign/LogoutkakaoPage"));
+
 const signRouter = () => {
   return [
     { path: "", element: <Navigate to="in" /> },
@@ -23,6 +27,22 @@ const signRouter = () => {
       element: (
         <Suspense fallback={<div>Load..</div>}>
           <SignupPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "kakao",
+      element: (
+        <Suspense fallback={<div>Load..</div>}>
+          <SigninkakaoPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "kakao/logout",
+      element: (
+        <Suspense fallback={<div>Load..</div>}>
+          <LogoutkakaoPage />
         </Suspense>
       ),
     },

@@ -18,7 +18,7 @@ export const useCustomMove = () => {
 
   const moveToDetail = code => {
     if (isLogin) {
-      navigate({ pathname: `../detail/${code}` });
+      navigate({ pathname: `/product/detail/${code}` });
     } else {
       alert("회원만 접근이 가능합니다. 로그인 페이지로 이동합니다.");
       navigate("/sign/in");

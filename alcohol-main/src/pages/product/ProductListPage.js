@@ -17,6 +17,8 @@ import {
   ProListWrap,
   ProductWrap,
 } from "../../styles/product/proWrapCss";
+import { ProSearchForm } from "../../styles/common/searchCss";
+import { getCookie } from "../../util/cookieUtil";
 
 const ProductPage = () => {
   const { isLogin } = useCustomLogin();
@@ -87,6 +89,8 @@ const ProductPage = () => {
       searchcontents: e.target.value,
     }));
   };
+
+  const [searchText, setSearchText] = useState();
   // const handleClickSearch = () => {
   //   SearchMutation.mutate(alcoholSearch);
   // };
@@ -135,6 +139,10 @@ const ProductPage = () => {
     refetch();
   };
 
+  const searchWord = event => {
+    setSearchText(event.target.value);
+  };
+
   return (
     <ProductWrap>
       {/* Side-bar Component */}
@@ -154,6 +162,36 @@ const ProductPage = () => {
           selectValue={select.category}
           onRecentClick={handleClickRecent}
         />
+        {/* <ProSearchForm>
+        <div className="search-wrap">
+          <div className="search-info">
+            <input
+              type="text"
+              className="search-word"
+              placeholder={'검색할 주류를 입력해주세요.'}
+              name={'searchcontents'}
+              onChange={searchWord}
+            />
+            <button className="search-bt" onClick={searchAlcohol}>
+              <img src={process.env.PUBLIC_URL + `/images/search.png`} />
+            </button>
+          </div>
+
+          <div className="line"></div>
+          <select
+            // value={selecteOption}
+            // onChange={onChangeOption}
+            // style={{
+            //   margin: "0 auto",
+            // }}
+            // onChange={onSelectChange}
+          >
+            <option value={0}>인기순</option>
+            <option value={1}>높은 가격순</option>
+            <option value={2}>낮은 가격순</option>
+          </select>
+        </div>
+        </ProSearchForm> */}
         <div></div>
 
         {/* Content Component (Card) */}

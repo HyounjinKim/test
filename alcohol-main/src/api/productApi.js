@@ -58,24 +58,39 @@ export const getAlcholType = async (mainCategory, subCategory) => {
   }
 };
 
-export const nonSignAlcholSearch = async ({ search }) => {
+export const nonSignAlcholSearch = async ( {search} ) => {
   console.log("axios-data", search);
   try {
+    console.log('여기오나')
     const response = await axios.post(
       `${SERVER_URL}/main/anony/contents`,
       search,
     );
+    console.log(response.status)
     if (response.status === 200) {
-      // console.log("result", response.data);
+      console.log("result", response.data);
       const result = response.data;
       return result;
     } else {
       console.log("no");
     }
   } catch (error) {
-    console.log(error);
+    alert(error.response.data.errorMessage)
   }
 };
+
+// export const nonSignAlcholSearch = async ( search ) => {
+//   console.log("axios-data", search);
+//   const searchCon = {
+//     searchcontents: search
+//   }
+//     await axios.post(
+//       `${SERVER_URL}/main/anony/contents`,
+//       searchCon,
+//     ).then(res =>{
+//         console.log(res.data)
+//     })
+// };
 // export const SignAlcholSearch = async () => {};
 
 export const SignAlcholSearch = async ({ search }) => {

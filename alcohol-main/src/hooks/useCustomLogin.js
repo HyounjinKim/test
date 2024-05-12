@@ -19,7 +19,6 @@ const useCustomLogin = () => {
   const isLogin =
     loginState && Object.keys(loginState).length > 0 ? true : false;
 
-  console.log(isLogin);
   // 로그인 기능
   // const doLogin = async ({ loginParam, successFn, failFn, errorFn }) => {
   //   const result = await postLogin({ loginParam, successFn, failFn, errorFn });

@@ -27,7 +27,7 @@ export const postSign = async ({
     }
   } catch (error) {
     if (error.request.readyState === 4) {
-      return failFn();
+      return failFn(error.response.data);
     } else {
       errFn("서버에러에요");
     }
@@ -84,7 +84,7 @@ export const postSign = async ({
 // };
 
 export const postLogin = async ({ loginParam }) => {
-  try {
+  // try {
     // 만약에 API 서버가 JSON 을 원한다면
     const header = { headers: { "Content-Type": "application/json" } };
 
@@ -107,9 +107,9 @@ export const postLogin = async ({ loginParam }) => {
     // } else {
     //   failFn("로그인에 실패하였습니다. 다시 시도해주세요.");
     // }
-  } catch (error) {
-    console.log(
-      "로그인에 실패하였습니다. 서버가 불안정합니다.다시 시도해주세요.",
-    );
-  }
+  // } catch (error) {
+  //   console.log(
+  //     "로그인에 실패하였습니다. 서버가 불안정합니다.다시 시도해주세요.",
+  //   );
+  // }
 };

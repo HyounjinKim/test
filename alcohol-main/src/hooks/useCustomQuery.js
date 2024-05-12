@@ -51,7 +51,7 @@ export const useCustomQuery = () => {
     } else {
       queryStr = defaultQueryString;
     }
-    navigate({ pathname: "../list", search: queryStr });
+    navigate({ pathname: "/product/list", search: queryStr });
   };
 
   return { type, sub, MoveToType, MoveToSearch, search };

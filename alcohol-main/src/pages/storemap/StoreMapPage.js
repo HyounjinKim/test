@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { KakaoMapContext, Map, MapMarker } from "react-kakao-maps-sdk";
 import StoreMapInfo from "../../components/storeMap/StoreMapInfo";
-import { dummyData } from "../../mock/PlaceData";
 import { PB16 } from "../../styles/basic";
 import {
   ItemContent,
@@ -11,23 +10,11 @@ import {
 import { MarketWrap, MyLocation, StoreWrap } from "../../styles/StoreMapCss";
 import BasicLayout from "../../layout/BasicLayout";
 import { getMarketAddress } from "../../api/marketMapApi";
-import styled from "@emotion/styled/macro";
 import axios from "axios";
-
-// const initState = [
-//   {
-//     marketcode: 1,
-//     marketname: "포도대구동성로점",
-//     address: "대구광역시 중구 공평동 57-3번지 101호",
-//     phonenumber: "01011111111",
-//     delivery: "PickUp",
-//     opentime: "10:00:00",
-//     closetime: "22:00:00",
-//   },
-// ];
 
 const geocoder = new window.kakao.maps.services.Geocoder();
 
+// 주소 좌표 변환
 const getAddr = addr => {
   return new Promise((resolve, reject) => {
     geocoder.addressSearch(`${addr}`, function (result, status) {
@@ -129,6 +116,14 @@ const StoreMapPage = () => {
 
     getMarkerInfo();
 
+    // 현재 위치 주소 보여줌
+    geocoder.coord2Address(markerP.lng, markerP.lat, function (result, status) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        document.getElementById("myaddress").innerText =
+          result[0].address.address_name;
+      }
+    });
+
     // 마켓 목록 보여줌
     getMarketAddress({
       successFn: data => {
@@ -140,14 +135,6 @@ const StoreMapPage = () => {
       errorFn: data => {
         alert("서버 불안정");
       },
-    });
-
-    // 현재 위치 주소 보여줌
-    geocoder.coord2Address(markerP.lng, markerP.lat, function (result, status) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        document.getElementById("myaddress").innerText =
-          result[0].address.address_name;
-      }
     });
 
   }, [markers]);

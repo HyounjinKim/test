@@ -4,6 +4,7 @@ import { CardContainer, CardFlex } from "../../styles/main/cardStlye";
 import { Common } from "../../styles/CommonCss";
 
 import { useNavigate } from "react-router";
+import useCustomMove from '../../hooks/useCustomMove';
 
 const initState = [
   {
@@ -15,8 +16,10 @@ const initState = [
   },
 ];
 const CardSet = ({ data }) => {
+  const { moveToDetail } = useCustomMove();
   const navigate = useNavigate();
   const newData = data ? data.slice(0, 3) : [];
+  console.log(newData,'dadadadadadadada')
   // const [newData, setNewData] = useState(initState);
 
   const CardsWrapper = styled.div`
@@ -33,7 +36,8 @@ const CardSet = ({ data }) => {
           <CardContainer key={index}>
             <a
               onClick={() => {
-                navigate(`/item`);
+                console.log(product,'evvvvvvvvvvvvvvv')
+                moveToDetail(product?.code)
                 window.scrollTo(0, 0); // 페이지 상단으로 스크롤 이동
               }}
             >

@@ -11,7 +11,15 @@ import { Common } from "../../styles/CommonCss";
 import { MainWrap } from "../../styles/main/mainCss";
 import { PickUpCard } from "../../styles/main/pickupCardCss";
 import BasicLayout from "../../layout/BasicLayout";
-
+import { getCookie } from '../../util/cookieUtil';
+import axios from 'axios';
+import { SERVER_URL } from '../../api/config';
+import { SignAlcholSearch, nonSignAlcholSearch } from '../../api/productApi';
+import useCustomLogin from '../../hooks/useCustomLogin';
+import { useCustomQuery } from '../../hooks/useCustomQuery';
+import { useMutation } from 'react-query';
+import { GridContainer } from '../../styles/product/proWrapCss';
+import ProductCard from '../../components/product/ProductCard';
 const initState = [
   {
     code: 0,
@@ -28,12 +36,26 @@ const initState = [
   },
 ];
 
+const searinitState = [
+  {
+    code: 0,
+    name: "",
+    price: 0,
+    ratingaverage: 0,
+    picture: "",
+  },
+];
+
 const Main = () => {
-  const navigate = useNavigate();
+const navigate = useNavigate();
   // const [mostData, setMostData] = useState(initState);
   const [mostData, setMostData] = useState([]);
   const [newdata, setNewData] = useState([]);
   const [randdata, setRandData] = useState([]);
+  const [searchText,setSearchText] = useState('');
+  const searchInitState = {
+    searchcontents: '',
+  };
 
   useEffect(() => {
     getRandProduct({
@@ -77,6 +99,64 @@ const Main = () => {
     });
   }, []);
 
+  //========================================
+
+  const { isLogin } = useCustomLogin();
+  const { type, sub, search, MoveToSearch } = useCustomQuery();
+  const [alcoholSearch, setAlcoholSearch] = useState(searchInitState);
+  const [searchData, setSearchData] = useState(searinitState);
+
+  const handleClickSearch = () => {
+    if (isLogin) {
+      UserSearchMutation.mutate(alcoholSearch);
+    } else {
+      alcoholSearch.searchcontents = searchText;
+      SearchMutation.mutate(alcoholSearch);
+    }
+  };
+
+  const SearchMutation = useMutation({
+    mutationFn: search => nonSignAlcholSearch({ search }),
+    onSuccess: result => {
+      console.log("axios result :", result);
+      MoveToSearch(alcoholSearch.searchcontents);
+      setSearchData(result);
+      console.log(result,'1212321312312312')
+      return <GridContainer>
+          {searchData?.map((product, index) => (
+            <ProductCard key={index} data={product} />
+          ))}
+        </GridContainer>
+    },
+    onError: () => {},
+  });
+
+  // 회원용 서치
+  const UserSearchMutation = useMutation({
+    mutationFn: search => SignAlcholSearch({ search }),
+    onSuccess: result => {
+      console.log("jwtAxios result :", result);
+      MoveToSearch(alcoholSearch.searchcontents);
+      setSearchData(result);
+    },
+    onError: () => {},
+  });
+
+  // ===================================================
+
+  // const search = async () => {
+  //   if(getCookie('member') !== undefined){
+  //     await SignAlcholSearch(searchText);
+  //   }else{
+  //     await nonSignAlcholSearch(searchText);
+  //   }
+    
+  // }
+
+  const searchWord = (event) =>{
+    setSearchText(event.target.value)
+  }
+
   return (
     <BasicLayout>
       <MainWrap>
@@ -91,14 +171,15 @@ const Main = () => {
           >
             <div className="search-wrap">
               <input
+                id='search'
                 type="text"
                 placeholder="검색어를 입력해주세요"
                 className="search-word"
-                // onChange={handleSearchText}
+                onChange={searchWord}
               ></input>
               <button
                 className="search-bt"
-                // onClick={handleClickSubmit}
+                onClick={handleClickSearch}
               >
                 <img src="./images/search.png" />
               </button>

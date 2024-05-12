@@ -117,7 +117,7 @@ const ProductSidebar = type => {
           // active={activeSide === 1} // 고유 숫자와 비교
           onClick={() => handleClickAll(typeProps)} // 고유 숫자 전달
         />
-        {status?.[1] ? (
+        {status?.[1] && status.length > 2 ? (
           <SideBt
             sidenNm={`${status?.[2]}`}
             sideId={2}
@@ -127,7 +127,7 @@ const ProductSidebar = type => {
         ) : (
           ""
         )}
-        {status?.[2] ? (
+        {status?.[2] && status.length > 3 ? (
           <SideBt
             sidenNm={`${status?.[3]}`}
             sideId={3}
@@ -137,7 +137,7 @@ const ProductSidebar = type => {
         ) : (
           ""
         )}
-        {status?.[3] ? (
+        {status?.[3] && status.length > 4 ? (
           <SideBt
             sidenNm={`${status?.[4]}`}
             sideId={4}
@@ -147,10 +147,10 @@ const ProductSidebar = type => {
         ) : (
           ""
         )}
-        {status?.[4] ? (
+        {status?.[4] && status.length > 5 ? (
           <SideBt
             sidenNm={`${status?.[5]}`}
-            sideId={4}
+            sideId={5}
             // active={activeSide === 4}
             onClick={() => handleClickSelectFour(typeProps)}
           />

@@ -50,7 +50,7 @@ const LoginPage = () => {
     }
   };
   const successFn = result => {
-    console.log("성공", result);
+    console.log("토큰 - ", result);
     moveToPath("/");
   };
 
@@ -65,7 +65,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      {console.log("로그인인포", loginParam)}
+      {/* {console.log("로그인인포", loginParam)} */}
       <LoginWrap>
         <LoginTitle>
           <p className="logo">ALCHOHOL HOLIC</p>
