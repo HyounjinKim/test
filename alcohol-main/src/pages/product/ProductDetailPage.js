@@ -1,7 +1,7 @@
 import styled from "@emotion/styled/macro";
 import React, { useState } from "react";
 import Count from "../../components/basic/Count";
-import { P16, P20, P30, PB20 } from "../../styles/basic";
+import { P16, P20, P30, PB20, PB30 } from "../../styles/basic";
 import { Common } from "../../styles/CommonCss";
 
 import { useNavigate, useParams } from "react-router-dom";
@@ -129,6 +129,7 @@ const DetailedItemPage = () => {
   const finishs = serverData[0].finish;
   const contents = serverData[0].content;
   const nations = serverData[0].nation;
+  const review = serverData[0].reviewcacount;
   // console.log("fff : ", taste);
   const taste = tastes;
   console.log("array : ", taste);
@@ -139,6 +140,7 @@ const DetailedItemPage = () => {
 
   // -------------------찜목록 추가 기능 start ---------------------------
   const fetchData = () => {
+    handleHeartButtonClick();
     // console.log("상품 코드 제발 찜추가:", detailParam.code);
     postWish({
       code: {
@@ -189,8 +191,8 @@ const DetailedItemPage = () => {
               <img
                 src={
                   isHeartChecked
-                    ? process.env.PUBLIC_URL + "/images/heartOn.svg"
-                    : process.env.PUBLIC_URL + "/images/heartOff.svg"
+                    ? process.env.PUBLIC_URL + "/images/heartOff.svg"
+                    : process.env.PUBLIC_URL + "/images/heartOn.svg"
                 }
                 alt="heart"
                 className="heart-icon"
@@ -200,11 +202,11 @@ const DetailedItemPage = () => {
           </AA>
 
           <P16 style={{ color: `${Common.color.p600}` }}>
-            상품소개 : {productItem.introduction}
+            {productItem.introduction}
           </P16>
           <div className="starRev">
             <StarRev>{starImages}</StarRev>
-            <a href="#리뷰">?리뷰더보기</a>
+            <a href="#리뷰">{review} 리뷰더보기</a>
           </div>
           <h1>{serverData[0].price}원</h1>
           <div className="line" />
@@ -242,7 +244,7 @@ const DetailedItemPage = () => {
           </div>
           {/* <Count /> */}
           <div className="count">
-            <p className="product-name">[픽업]{serverData[0].name}</p>
+            <p className="product-name">{serverData[0].name}</p>
             <Count name="productCnt" setCount={setCount} count={count} />
             <p>{serverData[0].price}원</p>
           </div>
@@ -295,6 +297,13 @@ const DetailedItemPage = () => {
         <UlStyle>
           <ListLi3 items={categoryArray}></ListLi3>
           {/* <ListLi items={serverData[0].subcategory} /> */}
+        </UlStyle>
+      </div>
+      <ItemLine></ItemLine>
+      <div>
+        <PB30>상세페이지</PB30>
+        <UlStyle>
+        <img style={{width:'600px'}} src={serverData[0].picture} />
         </UlStyle>
       </div>
       {/* <PB30>여기에 상세페이지 </PB30> */}

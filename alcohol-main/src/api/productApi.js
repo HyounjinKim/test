@@ -94,7 +94,6 @@ export const nonSignAlcholSearch = async ( {search} ) => {
 // export const SignAlcholSearch = async () => {};
 
 export const SignAlcholSearch = async ({ search }) => {
-  console.log("axios-data", search);
   try {
     const response = await jwtAxios.post(`${SERVER_URL}/main/contents`, search);
     if (response.status === 200) {

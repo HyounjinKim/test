@@ -112,7 +112,7 @@ export const MapModal = ({ onClose, code }) => {
             ></MapMarker>
           </Map>
           <Place>
-            <PB20>판매처 선택</PB20>
+            <PB20 style={{fontSize:'1.5rem'}}>판매처 선택</PB20>
             {marketData?.map((place, index) => (
               <MapPlaceInfo
                 key={index}

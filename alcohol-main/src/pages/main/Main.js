@@ -11,15 +11,17 @@ import { Common } from "../../styles/CommonCss";
 import { MainWrap } from "../../styles/main/mainCss";
 import { PickUpCard } from "../../styles/main/pickupCardCss";
 import BasicLayout from "../../layout/BasicLayout";
-import { getCookie } from '../../util/cookieUtil';
-import axios from 'axios';
-import { SERVER_URL } from '../../api/config';
-import { SignAlcholSearch, nonSignAlcholSearch } from '../../api/productApi';
-import useCustomLogin from '../../hooks/useCustomLogin';
-import { useCustomQuery } from '../../hooks/useCustomQuery';
-import { useMutation } from 'react-query';
-import { GridContainer } from '../../styles/product/proWrapCss';
-import ProductCard from '../../components/product/ProductCard';
+import { getCookie } from "../../util/cookieUtil";
+import axios from "axios";
+import { SERVER_URL } from "../../api/config";
+import { SignAlcholSearch, nonSignAlcholSearch } from "../../api/productApi";
+import useCustomLogin from "../../hooks/useCustomLogin";
+import { useCustomQuery } from "../../hooks/useCustomQuery";
+import { useMutation } from "react-query";
+import { GridContainer } from "../../styles/product/proWrapCss";
+import ProductCard from "../../components/product/ProductCard";
+import ProductPage from '../product/ProductListPage';
+
 const initState = [
   {
     code: 0,
@@ -47,14 +49,14 @@ const searinitState = [
 ];
 
 const Main = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
   // const [mostData, setMostData] = useState(initState);
   const [mostData, setMostData] = useState([]);
   const [newdata, setNewData] = useState([]);
   const [randdata, setRandData] = useState([]);
-  const [searchText,setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const searchInitState = {
-    searchcontents: '',
+    searchcontents: "",
   };
 
   useEffect(() => {
@@ -108,6 +110,7 @@ const navigate = useNavigate();
 
   const handleClickSearch = () => {
     if (isLogin) {
+      alcoholSearch.searchcontents = searchText;
       UserSearchMutation.mutate(alcoholSearch);
     } else {
       alcoholSearch.searchcontents = searchText;
@@ -121,12 +124,6 @@ const navigate = useNavigate();
       console.log("axios result :", result);
       MoveToSearch(alcoholSearch.searchcontents);
       setSearchData(result);
-      console.log(result,'1212321312312312')
-      return <GridContainer>
-          {searchData?.map((product, index) => (
-            <ProductCard key={index} data={product} />
-          ))}
-        </GridContainer>
     },
     onError: () => {},
   });
@@ -141,7 +138,6 @@ const navigate = useNavigate();
     },
     onError: () => {},
   });
-
   // ===================================================
 
   // const search = async () => {
@@ -150,12 +146,12 @@ const navigate = useNavigate();
   //   }else{
   //     await nonSignAlcholSearch(searchText);
   //   }
-    
+
   // }
 
-  const searchWord = (event) =>{
-    setSearchText(event.target.value)
-  }
+  const searchWord = event => {
+    setSearchText(event.target.value);
+  };
 
   return (
     <BasicLayout>
@@ -171,16 +167,13 @@ const navigate = useNavigate();
           >
             <div className="search-wrap">
               <input
-                id='search'
+                id="search"
                 type="text"
                 placeholder="검색어를 입력해주세요"
                 className="search-word"
                 onChange={searchWord}
               ></input>
-              <button
-                className="search-bt"
-                onClick={handleClickSearch}
-              >
+              <button className="search-bt" onClick={handleClickSearch}>
                 <img src="./images/search.png" />
               </button>
             </div>
@@ -190,7 +183,15 @@ const navigate = useNavigate();
         <img src="./images/banner.svg"></img>
         <PickUpCard>
           <a
-            onClick={() => navigate(`pick/delivery`)}
+            className="pickCard2"
+            onClick={() => {
+              if (isLogin) {
+                navigate(`pick/delivery`);
+              }else{
+                alert('로그인 후 가능한 서비스입니다.')
+                navigate(`sign/in`);
+              }
+            }}
             style={{ background: Common.color.p200 }}
           >
             <div className="pickCard">
@@ -199,7 +200,15 @@ const navigate = useNavigate();
             </div>
           </a>
           <a
-            onClick={() => navigate(`/pick/pick`)}
+            className="pickCard2"
+            onClick={() => {
+              if (isLogin) {
+                navigate(`pick/pick`);
+              }else{
+                alert('로그인 후 가능한 서비스입니다.')
+                navigate(`sign/in`);
+              }
+            }}
             style={{
               background: Common.color.f900,
               color: `${Common.color.p000}`,
@@ -227,6 +236,7 @@ const navigate = useNavigate();
           <MainTitle mainText="HOT 인기제품" />
           <CardSet data={mostData} />
         </div>
+        <ProductPage test={alcoholSearch}></ProductPage>
       </MainWrap>
     </BasicLayout>
   );

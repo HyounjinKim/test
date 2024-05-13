@@ -19,7 +19,6 @@ const CardSet = ({ data }) => {
   const { moveToDetail } = useCustomMove();
   const navigate = useNavigate();
   const newData = data ? data.slice(0, 3) : [];
-  console.log(newData,'dadadadadadadada')
   // const [newData, setNewData] = useState(initState);
 
   const CardsWrapper = styled.div`

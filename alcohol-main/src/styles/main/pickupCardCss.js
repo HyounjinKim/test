@@ -26,4 +26,7 @@ export const PickUpCard = styled.div`
       margin-top: 15px;
     }
   }
+  .pickCard2 :hover {
+    cursor: pointer;
+  }
 `;

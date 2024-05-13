@@ -79,6 +79,7 @@ export const BigButton = styled.button`
   height: 49px;
   font-weight: bold;
   cursor: pointer;
+  font-size: 2rem
 `;
 export const SButton = styled.button`
   width: 80px;

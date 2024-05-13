@@ -21,43 +21,48 @@ const ProductCard = ({ data, showGrade }) => {
   // console.log("받은 데이터", data);
   const { moveToDetail } = useCustomMove();
   const navigate = useNavigate();
-
-  return (
-    <ProCardContainer onClick={() => moveToDetail(data?.code)}>
-      <OptiPlaceholder
-        alt=""
-        width={240}
-        height={240}
-        placeholder={
-          <div>
-            <OptiWireframe width={240} height={240} />
-          </div>
-        }
-        src={data?.picture}
-      />
-      {/* <img className="card-img" src={data?.picture} alt={data?.productNm} /> */}
-      {/* <a onClick={() => navigate(`/item`)}>
-      </a> */}
-      {!showGrade && (
-        <CardFlex>
+  if (data.code !== 0) {
+    return (
+      <ProCardContainer onClick={() => moveToDetail(data?.code)}>
+        <OptiPlaceholder
+          alt=""
+          width={240}
+          height={240}
+          placeholder={
+            <div>
+              <OptiWireframe width={240} height={240} />
+            </div>
+          }
+          src={data?.picture}
+        />
+        {/* <img className="card-img" src={data?.picture} alt={data?.productNm} /> */}
+        {/* <a onClick={() => navigate(`/item`)}>
+        </a> */}
+        {!showGrade && (
+          <CardFlex>
+            <div className="tagform">
+              <img
+                src={process.env.PUBLIC_URL + `/images/star.png`}
+                alt="star"
+              />
+              <p>{data?.ratingaverage}</p>
+            </div>
+          </CardFlex>
+        )}
+        {/* <CardFlex>
           <div className="tagform">
             <img src={process.env.PUBLIC_URL + `/images/star.png`} alt="star" />
             <p>{data?.ratingaverage}</p>
           </div>
-        </CardFlex>
-      )}
-      {/* <CardFlex>
-        <div className="tagform">
-          <img src={process.env.PUBLIC_URL + `/images/star.png`} alt="star" />
-          <p>{data?.ratingaverage}</p>
-        </div>
-      </CardFlex> */}
-      <p className="productNm" style={{ color: Common.color.p900 }}>
-        {data?.name}
-      </p>
-      {/* <p className="productNm">{product?.subinfo}</p> */}
-      {data?.price && <h2 className="price">{data?.price}원</h2>}
-    </ProCardContainer>
-  );
+        </CardFlex> */}
+        <p className="productNm" style={{ color: Common.color.p900 }}>
+          {data?.name}
+        </p>
+        {/* <p className="productNm">{product?.subinfo}</p> */}
+        {data?.price && <h2 className="price">{data?.price}원</h2>}
+      </ProCardContainer>
+    );
+  }
 };
+
 export default ProductCard;

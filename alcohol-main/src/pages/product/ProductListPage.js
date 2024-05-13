@@ -19,8 +19,10 @@ import {
 } from "../../styles/product/proWrapCss";
 import { ProSearchForm } from "../../styles/common/searchCss";
 import { getCookie } from "../../util/cookieUtil";
+import jwtAxios from '../../util/jwtUtil';
+import { SERVER_URL } from '../../api/config';
 
-const ProductPage = () => {
+const ProductPage = ({test}) => {
   const { isLogin } = useCustomLogin();
   // @AREA  이 부분은 테스트용
   const initState = [
@@ -32,6 +34,7 @@ const ProductPage = () => {
       picture: "",
     },
   ];
+
   const { type, sub, search, MoveToSearch } = useCustomQuery();
   const params = { type, sub, search };
 
@@ -196,9 +199,9 @@ const ProductPage = () => {
 
         {/* Content Component (Card) */}
         <GridContainer>
-          {productData?.map((product, index) => (
-            <ProductCard key={index} data={product} />
-          ))}
+          {productData?.map((product, index) => {
+              return <ProductCard key={index} data={product} />;
+          })}
 
           {/* Search - Component */}
           {searchData?.map((product, index) => (
