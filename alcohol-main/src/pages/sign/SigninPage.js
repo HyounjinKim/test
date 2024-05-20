@@ -190,7 +190,9 @@ const LoginPage = () => {
           />
           카카오 3초만에 시작하기
         </LoginBt>
-        <LoginBt>이메일로 가입하기</LoginBt>
+        <LoginBt
+        onClick={()=>navigate('/sign/up')}
+        >회원가입</LoginBt>
       </LoginWrap>
     </div>
   );

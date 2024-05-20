@@ -4,6 +4,7 @@ import mypageRouter from "./mypageRouter";
 import paymentRouter from "./paymentRouter";
 import signRouter from "./signRouter";
 import productRouter from "./productRouter";
+import directPayRouter from "./directPayRouter";
 import testRouter from "./testRouter";
 import pickProductRouter from "./pickProductRouter";
 import Loading from "../components/common/Loading";
@@ -26,7 +27,8 @@ const MyPage = lazy(() => import("../pages/mypage/MyPage"));
 const StoreMapPage = lazy(() => import("../pages/storemap/StoreMapPage"));
 // NotFound-Page
 const NotFoundPage = lazy(() => import("../pages/storemap/StoreMapPage"));
-
+// direcyPay-Page
+const DirectPayPage = lazy(() => import("../pages/directpay/DirectPayPage"));
 // Product-test
 const TestPage = lazy(() => import("../pages/product_test/ProductTest"));
 
@@ -99,12 +101,21 @@ const router = createBrowserRouter([
     children: mypageRouter(),
   },
   {
-    path: "/storemap",
+    path: "/storemap/",
     element: (
       <Suspense fallback={<div>Loading</div>}>
         <StoreMapPage />
       </Suspense>
     ),
+  },
+  {
+    path: "/directpay/",
+    element: (
+      <Suspense fallback={<div>Loading</div>}>
+        <DirectPayPage />
+      </Suspense>
+    ),
+    children: directPayRouter(),
   },
   // Product-test-router
   {

@@ -30,7 +30,6 @@ const CardSet = ({ data }) => {
     <CardsWrapper>
       {newData.map((product, index) => {
         const picSrc = product.picture;
-        const pic = picSrc.split("/").pop();
         return (
           <CardContainer key={index}>
             <a
@@ -42,7 +41,7 @@ const CardSet = ({ data }) => {
             >
               <img
                 className="card-img"
-                src={`/images/alcohol/${pic}`}
+                src={picSrc}
                 alt={product.picture}
               />
             </a>

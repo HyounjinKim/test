@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import {
   SignAlcholSearch,
@@ -101,6 +101,7 @@ const ProductPage = ({test}) => {
   // 토큰있냐 없냐..에 따라 실행..?
   const handleClickSearch = () => {
     if (isLogin) {
+      console.log("일로왔냐");
       UserSearchMutation.mutate(alcoholSearch);
     } else {
       SearchMutation.mutate(alcoholSearch);
@@ -146,10 +147,20 @@ const ProductPage = ({test}) => {
     setSearchText(event.target.value);
   };
 
+  useEffect(()=>{
+    if(search){
+      setAlcoholSearch(prevValue => ({
+        ...prevValue,
+        searchcontents: search,
+      }));
+      handleClickSearch();
+    }
+  },[])
+
   return (
     <ProductWrap>
       {/* Side-bar Component */}
-      <ProductSidebar type={sideParam} />
+      { <ProductSidebar type={sideParam} search={search} />}
 
       {/* Search-bar Component */}
       <ProListWrap>

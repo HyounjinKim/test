@@ -109,13 +109,12 @@ const Main = () => {
   const [searchData, setSearchData] = useState(searinitState);
 
   const handleClickSearch = () => {
-    if (isLogin) {
-      alcoholSearch.searchcontents = searchText;
-      UserSearchMutation.mutate(alcoholSearch);
-    } else {
-      alcoholSearch.searchcontents = searchText;
-      SearchMutation.mutate(alcoholSearch);
-    }
+    navigate('/product/list?type=위스키&search='+searchText)
+    // if (isLogin) {
+    //   UserSearchMutation.mutate(alcoholSearch);
+    // } else {
+    //   SearchMutation.mutate(alcoholSearch);
+    // }
   };
 
   const SearchMutation = useMutation({
@@ -132,9 +131,11 @@ const Main = () => {
   const UserSearchMutation = useMutation({
     mutationFn: search => SignAlcholSearch({ search }),
     onSuccess: result => {
-      console.log("jwtAxios result :", result);
-      MoveToSearch(alcoholSearch.searchcontents);
-      setSearchData(result);
+      // console.log("jwtAxios result :", result);
+      console.log("search :", search);
+      // MoveToSearch(search);
+
+      // setSearchData(result);
     },
     onError: () => {},
   });
@@ -149,8 +150,8 @@ const Main = () => {
 
   // }
 
-  const searchWord = event => {
-    setSearchText(event.target.value);
+  const searchWord = e => {
+    setSearchText(e.target.value);
   };
 
   return (
@@ -187,9 +188,11 @@ const Main = () => {
             onClick={() => {
               if (isLogin) {
                 navigate(`pick/delivery`);
+                window.scroll(0,0);
               }else{
                 alert('로그인 후 가능한 서비스입니다.')
                 navigate(`sign/in`);
+                window.scroll(0,0);
               }
             }}
             style={{ background: Common.color.p200 }}
@@ -204,9 +207,12 @@ const Main = () => {
             onClick={() => {
               if (isLogin) {
                 navigate(`pick/pick`);
+                window.scroll(0,0);
+
               }else{
                 alert('로그인 후 가능한 서비스입니다.')
                 navigate(`sign/in`);
+                window.scroll(0,0);
               }
             }}
             style={{
@@ -236,7 +242,6 @@ const Main = () => {
           <MainTitle mainText="HOT 인기제품" />
           <CardSet data={mostData} />
         </div>
-        <ProductPage test={alcoholSearch}></ProductPage>
       </MainWrap>
     </BasicLayout>
   );

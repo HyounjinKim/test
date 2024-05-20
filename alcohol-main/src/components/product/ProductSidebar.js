@@ -4,7 +4,7 @@ import { SideBar } from "../../styles/product/sideBarCss";
 import SideBt from "../basic/SideBt";
 import SideTitle from "../basic/SideTitle";
 
-const ProductSidebar = type => {
+const ProductSidebar = (type,search) => {
   // search
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -83,7 +83,7 @@ const ProductSidebar = type => {
     } else if (typeProps === "리큐르") {
       // console.log("리큐르");
       resultColumn = liqueurColumn;
-    } else if (searchQuery !== null) {
+    } else if (searchQuery !== null || search) {
       resultColumn = searchColumn;
     } else {
       console.log("No match");

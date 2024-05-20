@@ -1,5 +1,5 @@
 import styled from "@emotion/styled/macro";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Count from "../../components/basic/Count";
 import { P16, P20, P30, PB20, PB30 } from "../../styles/basic";
 import { Common } from "../../styles/CommonCss";
@@ -27,8 +27,11 @@ import {
 } from "../../styles/common/reviewProductCss";
 import { StarRev } from "../../styles/common/StarCss";
 import { stockState } from "../../atom/stockState";
-import ListLi2 from '../../components/detail/ListLi2';
-import ListLi3 from '../../components/detail/ListLi3';
+import ListLi2 from "../../components/detail/ListLi2";
+import ListLi3 from "../../components/detail/ListLi3";
+import axios from "axios";
+import jwtAxios from "../../util/jwtUtil";
+import { buypage } from "../../api/directPayApi";
 
 export const items1 = ["1", "2", "3"];
 export const items2 = ["a", "b", "c"];
@@ -44,6 +47,13 @@ const DetailedItemPage = () => {
   const [isCartModalOpen, setCartModalOpen] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
+
+  const [userInfo, setUserInfo] = useState({
+    nickname: "",
+    phone: "",
+    address: "",
+    email: "",
+  });
 
   // 모달관련
   const handleOpenMapModal = () => {
@@ -179,6 +189,22 @@ const DetailedItemPage = () => {
   // console.log("ㅍㅋ : ", postCard);
 
   // -------------------찜목록 추가 기능 end ---------------------------
+  const buy = async () => {
+    const info = await buypage();
+    setUserInfo({
+      nickname: info.nickname,
+      address: info.address,
+      phone: info.phone,
+      email: info.email,
+    });
+  };
+
+  useEffect(() => {
+    if(userInfo.nickname !== ''){
+      navigate("/directpay/buy", { state: { info: userInfo } });
+    }
+    
+}, [userInfo]);
 
   return (
     <ItemWrap>
@@ -259,7 +285,10 @@ const DetailedItemPage = () => {
             <GoCartModal postcard={postCard} />
 
             <BigButton
-              onClick={() => navigate(`/pay`)}
+              onClick={async () => {
+                await buy();
+                // navigate(`/pay`)
+              }}
               style={{
                 background: `${Common.color.f900}`,
                 border: `1px solid ${Common.color.p000}`,
@@ -303,7 +332,7 @@ const DetailedItemPage = () => {
       <div>
         <PB30>상세페이지</PB30>
         <UlStyle>
-        <img style={{width:'600px'}} src={serverData[0].picture} />
+          <img style={{ width: "600px" }} src={serverData[0].picture} />
         </UlStyle>
       </div>
       {/* <PB30>여기에 상세페이지 </PB30> */}
